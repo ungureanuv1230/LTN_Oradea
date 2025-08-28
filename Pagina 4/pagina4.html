@@ -1,0 +1,184 @@
+<!doctype html>
+<html lang="ro">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="initial-scale=1,user-scalable=no,maximum-scale=1,width=device-width">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <title>Analiza accesibilității la transportul în comun</title>
+
+  <link rel="stylesheet" href="./resources/ol.css">
+  <link rel="stylesheet" href="resources/fontawesome-all.min.css">
+  <link href="resources/photon-geocoder-autocomplete.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="./resources/ol-layerswitcher.css">
+  <link rel="stylesheet" href="./resources/qgis2web.css">
+
+  <style>
+    html, body, #map {
+      width: 100%;
+      height: 100%;
+      padding: 0;
+      margin: 0;
+      background-color: #ffffff;
+    }
+
+    .ol-control > * {
+      background-color: #f8f8f8 !important;
+      color: #444444 !important;
+      border-radius: 0px;
+    }
+
+    .ol-attribution a,
+    .gcd-gl-input::placeholder,
+    .search-layer-input-search::placeholder {
+      color: #444444 !important;
+    }
+
+    .search-layer-input-search {
+      background-color: #f8f8f8 !important;
+    }
+
+    .ol-control > *:focus,
+    .ol-control > *:hover {
+      background-color: rgba(248, 248, 248, 0.7) !important;
+    }
+
+    .ol-control {
+      background-color: rgba(255, 255, 255, 0.4) !important;
+      padding: 2px !important;
+    }
+
+    /* Buton info */
+    .info-button {
+      position: absolute;
+      bottom: 20px;
+      left: 20px;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      padding: 8px 12px;
+      border-radius: 4px;
+      font-size: 18px;
+      cursor: pointer;
+      z-index: 1001;
+    }
+
+    /* Caseta info */
+    .info-popup {
+      position: absolute;
+      bottom: 70px;
+      left: 20px;
+      width: 340px;
+      background-color: white;
+      border: 2px solid #007bff;
+      padding: 15px;
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+      z-index: 1001;
+      display: none;
+    }
+
+    .info-popup h3 {
+      margin-top: 0;
+      font-size: 1.2em;
+      color: #004085;
+    }
+
+    .info-popup ul {
+      padding-left: 20px;
+      text-align: left;
+    }
+
+    .close-info {
+      background: none;
+      border: none;
+      color: #007bff;
+      font-size: 1.1em;
+      float: right;
+      cursor: pointer;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="map">
+    <div id="popup" class="ol-popup">
+      <a href="#" id="popup-closer" class="ol-popup-closer"></a>
+      <div id="popup-content"></div>
+    </div>
+  </div>
+
+  <!-- Buton info și casetă explicativă -->
+  <button class="info-button" onclick="toggleInfo()">ℹ️</button>
+
+  <div class="info-popup" id="infoPopup">
+    <button class="close-info" onclick="toggleInfo()">✖</button>
+    <h3>Informații despre pagina web</h3>
+    <p>
+      Această pagină web analizează accesibilitatea la transportul în comun în cartierul Rogerius. Pentru a identifica gradul de acoperire al LTN-urilor de către rețeaua de transport public și pentru a identifica zonele slab deservite, am creat un câte un buffer la 300 de metri și 500 de metri față de stațiile mijloacelor de transport în comun care corespunde unor distanțe de parcus pietonal de 4-10 minute.
+    </p>
+      Buffer-ele de 500 de metri în jurul stațiilor de transport acoperă majoritatea suprafeței cartierului Rogerius ceea ce sugerează că stațiile sunt bine distribuite, oferind acces facil la transport public pentru locuitorii din zonă.
+    </p>
+     În ceea ce privește buffer-ele efectuate la 300 de metri, acestea acoperă parțial cartierul, existând porțiuni (în special în partea estică și sudică) care nu sunt incluse în nicio zonă tampon. Asta însemnă că locuitorii din acele zone se află la mai multe de 300 de metri de cea mai apropiată stație.
+    </ul>
+  </div>
+
+  <!-- Scripturi -->
+  <script src="resources/qgis2web_expressions.js"></script>
+  <script src="resources/proj4.js"></script>
+  <script>
+    proj4.defs('EPSG:3857','+proj=merc +a=6378137 +b=6378137 +lat_ts=0 +lon_0=0 +x_0=0 +y_0=0 +k=1 +units=m +nadgrids=@null +wktext +no_defs');
+  </script>
+  <script src="./resources/functions.js"></script>
+  <script src="./resources/ol.js"></script>
+  <script src="./resources/ol-layerswitcher.js"></script>
+  <script src="resources/photon-geocoder-autocomplete.min.js"></script>
+
+  <script src="layers/Limitaadministrativ_1.js"></script>
+  <script src="layers/LTNRogerius_2.js"></script>
+  <script src="layers/CartierRogerius_3.js"></script>
+  <script src="layers/Buffer500mnjurulstaiilor_4.js"></script>
+  <script src="layers/Buffer300mnjurulstaiilor_5.js"></script>
+  <script src="layers/Supermarket_6.js"></script>
+  <script src="layers/Magazinmixt_7.js"></script>
+  <script src="layers/Restaurant_8.js"></script>
+  <script src="layers/Banc_9.js"></script>
+  <script src="layers/Parcare_10.js"></script>
+  <script src="layers/Staietransportpublic_11.js"></script>
+  <script src="layers/Universitate_12.js"></script>
+  <script src="layers/ScoalLiceu_13.js"></script>
+  <script src="layers/Grdini_14.js"></script>
+  <script src="layers/Farmacie_15.js"></script>
+  <script src="layers/Spital_16.js"></script>
+
+  <script src="styles/Limitaadministrativ_1_style.js"></script>
+  <script src="styles/LTNRogerius_2_style.js"></script>
+  <script src="styles/CartierRogerius_3_style.js"></script>
+  <script src="styles/Buffer500mnjurulstaiilor_4_style.js"></script>
+  <script src="styles/Buffer300mnjurulstaiilor_5_style.js"></script>
+  <script src="styles/Supermarket_6_style.js"></script>
+  <script src="styles/Magazinmixt_7_style.js"></script>
+  <script src="styles/Restaurant_8_style.js"></script>
+  <script src="styles/Banc_9_style.js"></script>
+  <script src="styles/Parcare_10_style.js"></script>
+  <script src="styles/Staietransportpublic_11_style.js"></script>
+  <script src="styles/Universitate_12_style.js"></script>
+  <script src="styles/ScoalLiceu_13_style.js"></script>
+  <script src="styles/Grdini_14_style.js"></script>
+  <script src="styles/Farmacie_15_style.js"></script>
+  <script src="styles/Spital_16_style.js"></script>
+
+  <script src="./layers/layers.js" type="text/javascript"></script>
+  <script src="./resources/Autolinker.min.js"></script>
+  <script src="./resources/qgis2web.js"></script>
+
+  <!-- Toggle info -->
+  <script>
+    function toggleInfo() {
+      const popup = document.getElementById('infoPopup');
+      popup.style.display = (popup.style.display === 'block') ? 'none' : 'block';
+    }
+  </script>
+</body>
+</html>

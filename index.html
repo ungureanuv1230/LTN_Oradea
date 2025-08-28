@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Low Traffic Neighbourhoods</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      min-height: 100vh;
+      background: url('background.jpg') no-repeat center center fixed;
+      background-size: cover;
+      color: #333;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 2em 1em;
+      text-align: center;
+      position: relative;
+      opacity: 0;
+      animation: fadeIn 1s ease-in forwards;
+    }
+
+    @keyframes fadeIn {
+      to {
+        opacity: 1;
+      }
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background-color: rgba(255, 255, 255, 0.75);
+      z-index: -1;
+    }
+
+    .logo {
+      position: fixed;
+      top: 10px;
+      left: 10px;
+      width: 80px;
+      z-index: 10;
+    }
+
+    .logo-oradea {
+      position: fixed;
+      top: 10px;
+      right: 10px;
+      width: 180px;
+      z-index: 10;
+    }
+
+    h1 {
+      color: #004085;
+      margin-bottom: 1em;
+    }
+
+    p {
+      max-width: 700px;
+      font-size: 1.1em;
+      line-height: 1.6;
+    }
+
+    .cta-button {
+      margin-top: 2em;
+      padding: 14px 24px;
+      background-color: #007bff;
+      color: white;
+      font-size: 1.1em;
+      font-weight: bold;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      text-decoration: none;
+      transition: all 0.3s ease;
+    }
+
+    .cta-button:hover {
+      background-color: #004085;
+      transform: scale(1.05);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    }
+
+    footer {
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 1em;
+      padding: 2em 1em 0;
+      font-style: italic;
+      font-size: 0.95em;
+      color: #333;
+      margin-top: auto;
+    }
+
+    footer div {
+      flex: 1 1 45%;
+      word-wrap: break-word;
+    }
+
+    footer div:first-child {
+      text-align: left;
+    }
+
+    footer div:last-child {
+      text-align: right;
+    }
+
+    @media (max-width: 600px) {
+      .logo, .logo-oradea {
+        width: 60px;
+      }
+
+      footer {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        font-size: 0.9em;
+      }
+
+      footer div {
+        flex: 1 1 100%;
+        text-align: center;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Logo UTCB -->
+  <img src="logo.svg" alt="Logo facultate" class="logo">
+
+  <!-- Logo Oradea -->
+  <img src="Oradea.svg" alt="Logo Oradea" class="logo-oradea">
+
+  <main>
+    <h1>Conceptul „Low Traffic Neighbourhoods”</h1>
+
+    <p>
+      Conceptul „Low Traffic Neighbourhoods” (LTN) presupune reconfigurarea cartierelor urbane pentru a reduce traficul de tranzit și a crea un mediu mai sigur și mai prietenos pentru pietoni și bicicliști. Prin implementarea unor soluții urbanistice simple, se urmărește încurajarea mobilității durabile, îmbunătățirea calității aerului și creșterea calității vieții în zonele rezidențiale.
+    </p>
+
+    <p>
+      Deși conceptul de „Low Traffic Neighbourhood”  a luat amploare și a fost implementat în multe țări europene, în special în Regatul Unit, în România aceste scheme nu sunt implementate în mod oficial. Totuși, în ultimii ani, în marile orașe din România au apărut diverse inițiative care susțin reconfigurarea spațiului urban în favoarea pietonilor și a mobilității active prin pietonalizarea temporară a unor artere, prin calmarea traficului în anumite zone.
+    <p>
+      În cadrul acestui proiect, sunt analizate aspecte relevante din cartierul Rogerius, Municipiul Oradea, iar rezultatele sunt prezentate sub formă de hărți interactive.
+    </p>
+
+    <a href="despre.html" class="cta-button">📍 Vizualizare hărți interactive</a>
+  </main>
+
+  <footer>
+    <div>Facultatea de Geodezie – Masterat Planificare Spațială și GIS pentru Dezvoltare Durabilă</div>
+    <div>Ing. Vasilica-Valentina TUDORICĂ</div>
+  </footer>
+</body>
+</html>
